@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd /opt/
+tar xf mysql-5.7.37-linux-glibc2.12-x86_64.tar.gz # 解压
+mv mysql-5.7.37-linux-glibc2.12-x86_64 {{ mysql_install_dir }}
+cd /usr/local
+chown -R mysql.mysql mysql
+echo 'export PATH={{ mysql_install_dir }}/bin:$PATH' > /etc/profile.d/mysql.sh && \
+source /etc/profile.d/mysql.sh
+ln -s {{ mysql_install_dir }}/include /usr/include/mysql
+echo '{{ mysql_install_dir }}/lib' /etc/ld.so.conf.d/mysql.conf
+echo 'MANDATORY_MANPATH   {{ mysql_install_dir }}/man' > /etc/man_db.conf
+mkdir /opt/data
+chown -R mysql.mysql /opt/data
+
