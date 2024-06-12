@@ -5,11 +5,10 @@
 ![image](https://github.com/huangA1200/ansible/assets/172261871/851fb22e-1bce-4377-aa5f-5689fdcbc1ab)
 
 
-
+遇到的问题：1.部署php网站时通过浏览器访问虚拟机地址无法访问php网站。解决方法：在受控机上关闭防火墙
+2.连接数据库后无法创建表以及插入数据。解决方法：在playbook中编写该数据库的权限
 
 参考资料：
 1.https://blog.csdn.net/m0_58805648/article/details/125699133
-
-
-
-2.https://blog.csdn.net/m0_64505752/article/details/132815028
+2.https://www.cnblogs.com/leixixi/p/14258568.html
+3.https://blog.csdn.net/m0_64505752/article/details/132815028
