@@ -1,0 +1,90 @@
+---
+- name: lamp
+  hosts: web
+  become: yes
+  tasks:
+    - name: install epel
+      yum:
+        name: epel-release
+        state: present
+
+    - name: install Python MySQL dependencies
+      yum:
+        name:
+          - MySQL-python
+        state: present
+
+    - name: install apache
+      yum:
+        name: httpd
+        state: present
+
+    - name: start apache
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: install MySQL server
+      yum:
+        name: mariadb-server
+        state: present
+
+    - name: start MySQL server
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: install php
+      yum:
+        name: 
+          - php
+          - php-mysql
+          - php-fpm
+        state: present
+
+    - name: Restart apache
+      service:
+        name: httpd
+        state: restarted
+
+    - name: create MySQL database
+      mysql_db:
+        name: testdb
+        state: present
+
+    - name: Create MySQL user
+      mysql_user:
+        name: myuser
+        password: 12345
+        priv: 'testdb.*:ALL'
+        state: present
+
+    - name: Create PHP index file
+      copy:
+        dest: /var/www/html/index.php
+        content: |
+          <?php
+          phpinfo();
+          ?>
+
+    - name: Create PHP MySQL connection test file
+      copy:
+        dest: /var/www/html/testdb.php
+        content: |
+          <?php
+          $servername = "localhost";
+          $username = "myuser";
+          $password = "12345";
+          $dbname = "testdb";
+
+          // Create connection
+          $conn = new mysqli($servername, $username, $password, $dbname);
+
+          // Check connection
+          if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+          }
+          echo "Connected successfully";
+          ?>
